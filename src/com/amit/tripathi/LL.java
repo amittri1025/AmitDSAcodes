@@ -3,8 +3,8 @@ package com.amit.tripathi;
 public class LL {
     private Node head;
     private Node tail;
-    private int size;
-    public LL(){
+    public int size;
+    LL(){
         this.size = 0;
     }
     public void insertFirst(int value){
@@ -20,7 +20,7 @@ public class LL {
     public void insertLast(int value){
         Node node = new Node(value);
         if(tail==null){
-   //        insertFirst(value);
+           insertFirst(value);
            return;
         }
         tail.next = node;
@@ -38,15 +38,61 @@ public class LL {
           insertLast(value);
           return;
       }
-      Node node = new Node(value);
       Node temp = head;
-      int i=1;
-      while(i<idx){
-            temp = temp.next;
-            i++;
-        }
-      node.next = temp.next;
+      for(int i=1; i<idx; i++){
+          temp = temp.next;
+      }
+      Node node = new Node(value, temp.next);
       temp.next = node;
+
+      size++;
+    }
+
+    public void deleteFirst(){
+        int val = head.value;
+        head = head.next;
+
+        if(head==null){
+            tail=null;
+        }
+
+        System.out.println("Removed: "+val);
+        size--;
+    }
+
+    public void deleteLast(){
+        if(size<=1){
+            deleteFirst();
+        }
+        int val = tail.value;
+        Node secondLast = get(size-1);
+        tail = secondLast;
+        tail.next = null;
+        System.out.println("Removed: "+val);
+        size--;
+    }
+
+    public void delete(int idx){
+        if(idx==0){
+            deleteLast();
+            return;
+        }
+        if(idx==size){
+            deleteLast();
+            return;
+        }
+        Node prevelem = get(idx-1);
+        Node sel_ele = get(idx);
+        prevelem.next = sel_ele.next;
+        size--;
+    }
+
+    public Node get(int index){
+        Node temp = head;
+        for(int i=1; i<index; i++){
+            temp = temp.next;
+        }
+        return temp;
     }
 
     public void display(){
@@ -57,6 +103,8 @@ public class LL {
         }
         System.out.print("END");
     }
+
+
 
     private class Node{
         private int value;
